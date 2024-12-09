@@ -1,3 +1,7 @@
+## Requirement
+
+- Docker
+- **use docker-compose up --build to use it using docker**
 
 ## Requirement
 

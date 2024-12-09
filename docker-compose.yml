@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/var/www/html
+      - ./vendor:/var/www/html/vendor
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_HOST: mysql
+      DATABASE_USER: auction_user
+      DATABASE_PASSWORD: auction_pass
+      DATABASE_NAME: db_online_auction
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: db_online_auction
+      MYSQL_USER: auction_user
+      MYSQL_PASSWORD: auction_pass
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
