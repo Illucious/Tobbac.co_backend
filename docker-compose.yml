@@ -1,44 +1,40 @@
 version: '3.8'
-
 services:
   web:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
-      - "8080:8080"
+      - "80:80"
     volumes:
       - .:/var/www/html
-      - ./vendor:/var/www/html/vendor
+      # Exclude vendor and other large directories from volume mount
+      - /var/www/html/vendor
+      - /var/www/html/writable
     depends_on:
-      - mysql
+      - db
     environment:
-      DATABASE_HOST: mysql
-      DATABASE_USER: auction_user
-      DATABASE_PASSWORD: auction_pass
-      DATABASE_NAME: db_online_auction
+      - APP_ENV=development
 
-  mysql:
+  db:
     image: mysql:8.0
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: db_online_auction
-      MYSQL_USER: auction_user
-      MYSQL_PASSWORD: auction_pass
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: myapp
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
     volumes:
       - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    ports:
-      - "8081:80"
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: db
       PMA_PORT: 3306
+    ports:
+      - "8080:80"
     depends_on:
-      - mysql
+      - db
 
 volumes:
   mysql-data:

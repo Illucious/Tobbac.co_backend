@@ -1,0 +1,40 @@
+# # Version Control
+# .git
+# .gitignore
+
+# # Development files
+# .env
+# .env.example
+# *.log
+
+# # Dependency directories
+# vendor/
+# node_modules/
+
+# # Build and test directories
+# builds/
+# test/
+
+# # Writable and cache directories
+# writable/
+# tmp/
+# cache/
+
+# # IDEs and editors
+# .vscode/
+# .idea/
+# *.swp
+# *.swo
+
+# # OS generated files
+# .DS_Store
+# Thumbs.db
+
+# # Composer files
+# composer.phar
+# composer.lock
+
+# # Unnecessary Docker files
+# Dockerfile
+# docker-compose.yml
+# .dockerignore
