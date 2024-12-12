@@ -1,5 +1,5 @@
-# Use PHP 8.2 with Apache
-FROM php:8.2-apache
+# Use an official PHP runtime as a parent image
+FROM php:8.1-apache
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -8,26 +8,15 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    libzip-dev \
     zip \
     unzip \
-    libicu-dev \
-    # Add MySQL client
-    default-mysql-client
+    libzip-dev
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install \
-    pdo \
-    pdo_mysql \
-    mysqli \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    zip \
-    intl
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -35,33 +24,19 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Create a non-root user
-RUN useradd -m myuser
-RUN chown -R myuser:myuser /var/www/html
-
-# Switch to non-root user
-USER myuser
-
-# Copy only necessary files for dependency installation first
-COPY --chown=myuser:myuser composer.json composer.lock* ./
+# Copy project files
+COPY . /var/www/html
 
 # Install project dependencies
-RUN composer install \
-    --no-interaction \
-    --no-plugins \
-    --no-scripts \
-    --ignore-platform-req=ext-intl
+RUN composer install
 
-# Switch back to root to set up Apache
-USER root
+# Configure Apache document root
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
-# Copy the rest of the application
-COPY --chown=myuser:myuser . .
-
-# Configure Apache
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Fix permissions
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html
 
 # Expose port 80
