@@ -2,11 +2,6 @@
 # .git
 # .gitignore
 
-# # Development files
-# .env
-# .env.example
-# *.log
-
 # # Dependency directories
 # vendor/
 # node_modules/
@@ -30,9 +25,6 @@
 # .DS_Store
 # Thumbs.db
 
-# # Composer files
-# composer.phar
-# composer.lock
 
 # # Unnecessary Docker files
 # Dockerfile

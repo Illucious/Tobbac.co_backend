@@ -1,7 +1,8 @@
-## Requirement
+## Docker setup
 
 - Docker
 - **use docker-compose up --build to use it using docker**
+- **docker run -p 8080:80 hvsshekhawat/tobac.co:1.0(image)**
 
 ## Requirement
 

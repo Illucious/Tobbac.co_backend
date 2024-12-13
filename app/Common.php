@@ -14,14 +14,3 @@
  * @see: https://codeigniter.com/user_guide/extending/common.html
  */
 
-
- // Handle CORS
-// header("Access-Control-Allow-Origin: *"); // Use specific domain(s) in production
-// header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-// header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
-// // Handle preflight requests (OPTIONS)
-// if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-//     http_response_code(200); // Respond OK for preflight requests
-//     exit();
-// }

@@ -24,6 +24,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
+# Create entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Copy project files
 COPY . /var/www/html
 
@@ -39,8 +43,8 @@ RUN a2enmod rewrite
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html
 
-# Expose port 80
+# Expose default web port
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Use entrypoint script
+CMD ["/entrypoint.sh"]
